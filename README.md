@@ -1,4 +1,4 @@
-# Projet
+# Projet LH ooq
 
 Code Arduino pour faire réagir une bande de LED selon une distance calculée par un capteur à ultrason.
 Lorsqu'un individu s'approche, les Leds deviennent de plus en plus rouge.
@@ -25,7 +25,7 @@ La détection se fait par interruption sur un timer. Ne pas attacher la Neo_Pixe
 Les bibliothèques suivantes doivent être installées dans l'IDE Arduino : 
 
 * [NewPing](https://bitbucket.org/teckel12/arduino-new-ping/downloads/) pour le fonctionnement du capteur à ultra-son 
-* [Adafruit_NeoPixel] (https://github.com/adafruit/Adafruit_NeoPixel) pour la bande de LED
+* [Adafruit_NeoPixel](https://github.com/adafruit/Adafruit_NeoPixel) pour la bande de LED
 
 ### Paramétrage
 
