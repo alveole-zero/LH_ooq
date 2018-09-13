@@ -34,15 +34,26 @@ Variables disponibles pour ajustement :
 * NUMPIXELS nombre de leds à allumer sur la bande
 * MAX_DISTANCE distance en cm à partir de laquelle une détection est faite
 * pingSpeed fréquence d'envoi du ping par le capteur à ultra_son (exemple : 50ms serait 20 envois par seconde)
-
+* LAPSE variable d'ajustement des calculs de compteurs
+* MAX_LAPSE_WITHOUT_DETECTION temps en millisecondes pour vérifier qu'il n'y a plus de détection
+* MAX_LAPSE_BEFORE_BLINKING temps maximum en secondes avant de lancer le clignotement de la bande de LEDs (valeur au hasard entre MIN et MAX)
+* MIN_LAPSE_BEFORE_BLINKING temps minimum en secondes avant de lancer le clignotement de la bande de LEDs (valeur au hasard entre MIN et MAX)
+* MAX_DELAY_BLINK temps minimum en millisecondes entre deux clignotements (valeur au hasard entre MIN et MAX)
+* MIN_DELAY_BLINK temps minimum en millisecondes entre deux clignotements (valeur au hasard entre MIN et MAX)
+* MAX_BLINKING_INTENSITY intensité maximum des LEDs lors de la phase de clignotement
 
 ## Effectuer les tests
 
+* Passer en MODE_DEBUG en décommentant le #define correspondant
 * Vérifier la détection d'approche -> la bande est de plus en plus rouge
 * Vérifier la remise à zéro lorsque l'éloignement est supérieur à MAX_DISTANCE (effacement de la dernière luminosité enregistrée)
 * Vérifer le déclenchement du clignotement losqu'il n'y a plus de détection faite
 
+## Déployer sur la carte Arduino
 
+* Supprimer les éventuels debugs en commentant le #define MODE_DEBUG
+* Télécharger le programme sur la carte
+* Et "Chauffe Marcel !!!"
 
 
 
