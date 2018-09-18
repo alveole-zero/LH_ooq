@@ -4,13 +4,13 @@
 
 #define TRIGGER_PIN  12  // Arduino pin tied to trigger pin on the ultrasonic sensor.
 #define ECHO_PIN     11  // Arduino pin tied to echo pin on the ultrasonic sensor.
-#define MAX_DISTANCE 100// Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+#define MAX_DISTANCE 50// Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
 #define PIN 9 // DO NOT ATTACHED THE STRAND TO THE TIMER PIN
 // How many NeoPixels are attached to the Arduino?
 #define NUMPIXELS 30
 
 // option debug
-#define DEBUG_MODE
+//#define DEBUG_MODE
 #define DEBUG_BRIGHTNESS true
 #define DEBUG_BLINKING false
 
@@ -43,7 +43,7 @@ const int MIN_LAPSE_BEFORE_BLINKING = 1; // SECONDES
 unsigned long cntBlink = 0;
 const unsigned int MIN_DELAY_BLINK = 2; //ms 
 const unsigned int MAX_DELAY_BLINK = 10 ; //ms 
-const unsigned int MAX_BLINKING_INTENSITY = 150; // from 0 up to 255
+const unsigned int MAX_BLINKING_INTENSITY = 50; // from 0 up to 255
 bool blinkLed = false;
 
 void setup() {
