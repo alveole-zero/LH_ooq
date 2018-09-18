@@ -4,8 +4,9 @@
 
 #define TRIGGER_PIN  12  // Arduino pin tied to trigger pin on the ultrasonic sensor.
 #define ECHO_PIN     11  // Arduino pin tied to echo pin on the ultrasonic sensor.
-#define MAX_DISTANCE 50// Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+#define MAX_DISTANCE 150// Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
 #define PIN 9 // DO NOT ATTACHED THE STRAND TO THE TIMER PIN
+#define UP 8
 // How many NeoPixels are attached to the Arduino?
 #define NUMPIXELS 30
 
@@ -30,8 +31,11 @@ unsigned long startMillis = 0;
 const int EXPONENT = 3;
 const int LAPSE = 2; // delay ms
 
+
+float smoothval;
+float filterval = 0.95 ;
 // detection variables
-const int MAX_LAPSE_WITHOUT_DETECTION = 500; //ms 
+const int MAX_LAPSE_WITHOUT_DETECTION = 1000; //ms 
 const int CNT_WITHOUT_DETECTION = MAX_LAPSE_WITHOUT_DETECTION  / LAPSE;
 int cnt = 0;
 bool updated = false;
@@ -46,11 +50,14 @@ const unsigned int MAX_DELAY_BLINK = 10 ; //ms
 const unsigned int MAX_BLINKING_INTENSITY = 50; // from 0 up to 255
 bool blinkLed = false;
 
+
 void setup() {
   Serial.begin(115200); // Open serial monitor at 115200 baud to see ping results.
   pixels.begin(); // This initializes the NeoPixel library.
   updateLED(0,0,0); //OFF on start
   pingTimer = millis(); // Start now.
+  pinMode(UP, OUTPUT);
+  digitalWrite(UP, HIGH);
 }
 
 void loop() {
@@ -65,6 +72,7 @@ void loop() {
     if (cnt > CNT_WITHOUT_DETECTION ){
       updateLED(0,0,0);
       blinkLed =true ;
+      //initReadings();
       cnt=0;
     }
   }
@@ -128,9 +136,11 @@ void echoCheck() { // Timer2 interrupt calls this function every 24uS where you 
     if (distance <= 1 || distance >= MAX_DISTANCE - tolerance ){
       brightness = 0;
       blinkLed = true;
+      initReadings();
     }else{
       float factor = (float) map(distance, 1, MAX_DISTANCE, 1000,0)/1000.0;
       brightness = pow(factor, EXPONENT)*255;
+      smooth();
       blinkLed =false;
     }
 #ifdef DEBUG_MODE && DEBUG_BRIGHTNESS
@@ -142,3 +152,15 @@ void echoCheck() { // Timer2 interrupt calls this function every 24uS where you 
   } 
   // Don't do anything here!
 }
+
+void smooth(){
+
+  smoothval =  (1- filterval)*brightness + filterval*smoothval;
+  brightness = smoothval;
+}
+
+void initReadings(){
+  smoothval = 0;
+}
+
+
