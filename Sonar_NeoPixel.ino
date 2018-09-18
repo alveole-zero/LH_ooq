@@ -4,7 +4,7 @@
 
 #define TRIGGER_PIN  12  // Arduino pin tied to trigger pin on the ultrasonic sensor.
 #define ECHO_PIN     11  // Arduino pin tied to echo pin on the ultrasonic sensor.
-#define MAX_DISTANCE 150// Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+#define MAX_DISTANCE 200// Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
 #define PIN 9 // DO NOT ATTACHED THE STRAND TO THE TIMER PIN
 #define UP 8
 // How many NeoPixels are attached to the Arduino?
@@ -33,7 +33,9 @@ const int LAPSE = 2; // delay ms
 
 
 float smoothval;
-float filterval = 0.95 ;
+float filtervalUp = 0.95;
+float filtervalDown = 0.80;
+float filterval ;
 // detection variables
 const int MAX_LAPSE_WITHOUT_DETECTION = 1000; //ms 
 const int CNT_WITHOUT_DETECTION = MAX_LAPSE_WITHOUT_DETECTION  / LAPSE;
@@ -137,8 +139,12 @@ void echoCheck() { // Timer2 interrupt calls this function every 24uS where you 
       brightness = 0;
       blinkLed = true;
       initReadings();
+    }else if ( distance > 1 && distance <40){
+      brightness = 255;
+      smooth();
+      blinkLed =false;
     }else{
-      float factor = (float) map(distance, 1, MAX_DISTANCE, 1000,0)/1000.0;
+      float factor = (float) map(distance, 40, MAX_DISTANCE, 1000,0)/1000.0;
       brightness = pow(factor, EXPONENT)*255;
       smooth();
       blinkLed =false;
@@ -154,7 +160,11 @@ void echoCheck() { // Timer2 interrupt calls this function every 24uS where you 
 }
 
 void smooth(){
-
+  if( brightness > smoothval){
+    filterval=filtervalUp;
+  }else{
+    filterval=filtervalDown;
+  }
   smoothval =  (1- filterval)*brightness + filterval*smoothval;
   brightness = smoothval;
 }
